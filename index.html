@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="no" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <title>Aktivitetsdag</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/foundation/6.4.3/css/foundation.css">
+  <link rel="stylesheet" href="./css/master.css">
+  <link rel="stylesheet" href="./css/index.css">
+  <link rel="icon" type="image/png" sizes="192x192" href="./icon/icon.png">
+  <script src="https://www.gstatic.com/firebasejs/5.0.2/firebase.js"></script>
+  <script>
+    // Initialize Firebase
+    var config = {
+      apiKey: "AIzaSyCQ_okOVcbYXlhukfJsJciT8xlACCETZ4o",
+      authDomain: "idrettsdag-b5b53.firebaseapp.com",
+      databaseURL: "https://idrettsdag-b5b53.firebaseio.com",
+      projectId: "idrettsdag-b5b53",
+      storageBucket: "",
+      messagingSenderId: "49187009985"
+    };
+    firebase.initializeApp(config);
+  </script>
+</head>
+
+<body>
+  <nav>
+    <ul>
+      <li><a href="index.html"><img src="./icon/icon.png" alt=""> Hjem</a></li>
+      <li><a href="elev.html">Resultater</a></li>
+      <li></li>
+      <li><a href="admin.html">Admin</a></li>
+    </ul>
+  </nav>
+
+  <main>
+    <h2>Påmelding:</h2>
+    <form id="reg" class="" action="index.html" method="post">
+      <label for="Skole">Velg Skole</label><select id="Skole" class="" name=""></select>
+      <label for="Klasse">Klasse:</label><input id="Klasse" type="text" name="" value="">
+      <label for="Sport">Velg Sport</label><select id="Sport" class="" name=""></select>
+      <label for="Team">Lagnavn:</label><input id="Team" type="text" name="" value="">
+      <button class="submit" type="submit" name="button">Send inn</button>
+    </form>
+
+    <h2>Resultater:</h2>
+    <table>
+      <thead>
+        <tr>
+          <td>Lagnavn</td>
+          <td>Sport</td>
+          <td>Skole</td>
+          <td>Klasse</td>
+        </tr>
+      </thead>
+      <tbody id="resultat">
+
+      </tbody>
+      <tbody>
+
+      </tbody>
+    </table>
+  </main>
+</body>
+
+<script type="text/javascript">
+  //Declaring and gettin all HTML ELEMENTS
+  var formregteam = document.getElementById("reg");
+  var inpTeamName = document.getElementById("Team");
+  var inpSkole = document.getElementById("Skole");
+  var inpSport = document.getElementById("Sport");
+  var inpClass = document.getElementById("Klasse");
+  var tbodyResultat = document.getElementById("resultat")
+
+  //Database refrenses
+  var database = firebase.database();
+  var SportDB = database.ref("Sport");
+  var LagDB = database.ref("Lag");
+  var SkoleDB = database.ref("Skole");
+  var ResultaterDB = database.ref("Resultater");
+
+  function GetSkole(snapshot) {
+
+    var regSchool = snapshot.key;
+    var theregSchool = snapshot.val();
+
+    inpSkole.innerHTML += `
+    <option value="${regSchool}">
+      ${theregSchool.name}
+    </option>`;
+  }
+
+  function GetSport(snapshot) {
+
+    var regSport = snapshot.key;
+    var theregSport = snapshot.val();
+
+    inpSport.innerHTML += `
+      <option value="${regSport}">
+        ${theregSport.name}
+      </option>`;
+  }
+
+  function PushTeam(event) {
+    event.preventDefault();
+
+    var valSkole = inpSkole.value;
+    var valSport = inpSport.value;
+    var valTeam = inpTeamName.value;
+    var valClass = inpClass.value;
+
+    inpClass.value = "";
+    inpTeamName.value = "";
+
+    LagDB.push({
+      "navn": valTeam,
+      "skole": valSkole,
+      "Klasse": valClass,
+      "Sport": valSport,
+    });
+  }
+
+  function GetTeams(snapshot) {
+
+    var regTeam = snapshot.key;
+    var regTeamName = snapshot.val();
+
+    var SkoleRef = database.ref("Skole/" + regTeamName.skole);
+
+    SkoleRef.on("value", function(snapshotSkole) {
+
+      console.log("testing schoolsRef");
+
+      var regSkole = snapshot.key;
+      var theSkole = snapshotSkole.val();
+      console.log(theSkole);
+
+      var SportRef = database.ref("Sport/" + regTeamName.Sport);
+
+      SportRef.on("value", function(snapshotSport) {
+
+        console.log("testing sportsRef");
+
+        var regSport = snapshot.key;
+        var theSport = snapshotSport.val();
+
+        console.log(theSport);
+
+        // show teams in table
+        tbodyResultat.innerHTML +=
+          `
+        <tr>
+          <td>
+            ${regTeamName.navn}
+          </td>
+          <td>
+            ${theSport.name}
+          </td>
+          <td>
+            ${theSkole.name}
+          </td>
+          <td>
+            ${regTeamName.Klasse}
+          </td>
+        </tr>
+        `;
+
+      });
+
+    });
+
+
+  }
+
+  formregteam.onsubmit = PushTeam;
+  SportDB.on("child_added", GetSport);
+  SkoleDB.on("child_added", GetSkole);
+  LagDB.on("child_added", GetTeams);
+</script>
+
+</html>

@@ -1,0 +1,82 @@
+
+:root{
+    --light-primary-color: #B3E5FC;
+    --space: 1rem;
+    --gray-lighter: #E8E8E8;
+    --bold: 700;
+    --gray: #ccc;
+    --smooth: ease-in-out 0.25s;
+    --smooth-lighter-shadow: 0 2px 4px var(--almost-white), 0 2px 4px rgba(0,0,0,0.15);
+}
+
+main{
+  padding-top: 10rem;
+  padding: 5rem;
+}
+
+/*-------------------*/
+
+table {
+  width: 100%;
+  margin-top: var(--space);
+  background: transparent;
+  border: 0 solid transparent;
+  font-size: inherit;
+}
+
+th{
+  font-size: 4rem;
+  background-color: var(--light-primary-color);
+  background-image: linear-gradient(45deg, #0288D1 0%, #85FFBD 100%);
+  transition: var(--smooth);
+}
+
+tbody {
+  background: transparent;
+}
+
+thead {
+  background-color: var(--gray-lighter);
+  font-weight: var(--bold);
+}
+
+td {
+  padding: calc(var(--space)*0.5);
+  border-bottom: 0.1rem solid var(--gray);
+  text-transform: none;
+  font-size: 2rem;
+  }
+}
+
+td::first-letter {
+  text-transform: uppercase;
+}
+
+
+/*------------------------------------*/
+
+form {
+  width: 100%;
+  padding: 1rem;
+  font-size: 2vw;
+  font-weight: bold;
+  text-align: left;
+  text-transform: uppercase;
+  text-decoration: none;
+  letter-spacing: 0.15rem;
+}
+
+label {
+  width: 100%;
+  margin: 0;
+}
+
+input {
+  width: 100%;
+  font-size: 0.7vw;
+}
+
+select{
+  height: 2.5rem;
+  font-size: 1vw;
+}

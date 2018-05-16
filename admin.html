@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="no" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <title>Aktivitetsdag</title>
+  <link rel="stylesheet" href="./css/master.css">
+  <link rel="stylesheet" href="./css/admin.css">
+  <link rel="icon" type="image/png" sizes="192x192" href="./icon/icon.png">
+  <script src="https://www.gstatic.com/firebasejs/5.0.2/firebase.js"></script>
+  <script>
+    // Initialize Firebase
+    var config = {
+      apiKey: "AIzaSyCQ_okOVcbYXlhukfJsJciT8xlACCETZ4o",
+      authDomain: "idrettsdag-b5b53.firebaseapp.com",
+      databaseURL: "https://idrettsdag-b5b53.firebaseio.com",
+      projectId: "idrettsdag-b5b53",
+      storageBucket: "",
+      messagingSenderId: "49187009985"
+    };
+    firebase.initializeApp(config);
+  </script>
+</head>
+
+<body>
+  <nav>
+    <ul>
+      <li><a href="index.html"><img src="./icon/icon.png" alt=""> Hjem</a></li>
+      <li><a href="elev.html">Resultater</a></li>
+      <li></li>
+      <li><a href="admin.html">Admin</a></li>
+    </ul>
+  </nav>
+
+
+  <main>
+    <form id="admin_form1" class="sportset" action="" method="post">
+      <label for="Sportnavn">Ny sport</label><input id="Sportnavn" type="text" name="" value="">
+      <button class="submit" type="submit" name="button">Send inn</button>
+    </form>
+
+    <form id="admin_form5" class="" action="index.html" method="post">
+      <select id="DelSport" class="" name=""></select>
+      <button class="submit" type="submit" name="button">Slett</button>
+    </form>
+
+    <form id="admin_form2" class="" action="index.html" method="post">
+      <label for="Skole">Ny Skole:</label><input type="text" id="Skole">
+      <button class="submit" type="submit" name="button">Send inn</button>
+    </form>
+
+    <form id="admin_form4" class="" action="index.html" method="post">
+      <select id="DelSkole" class="" name=""></select>
+      <button class="submit" type="submit" name="button">Slett</button>
+    </form>
+
+    <form id="admin_form3" class="" action="index.html" method="post">
+      <label for="Poeng">Poeng</label><input type="number" id="Poeng">
+      <select id="Poeng_lag"></select>
+      <button class="submit" type="submit" name="button">Send inn</button>
+    </form>
+
+    <form id="admin_form6" class="" action="index.html" method="post">
+      <label for="DelLag">Slett et Lag:</label>
+      <select id="DelLag" class="" name=""></select>
+      <button class="submit" type="submit" name="button">Slett</button>
+    </form>
+
+  </main>
+</body>
+<script type="text/javascript">
+  //Declare all variables
+  var formlagset = document.getElementById("admin_form3");
+  var formsportset = document.getElementById("admin_form1");
+  var formskoleset = document.getElementById("admin_form2");
+
+  var inpSport = document.getElementById("Sportnavn");
+  var inpPoeng = document.getElementById("Poeng");
+  var inpPoengLag = document.getElementById("Poeng_lag")
+  var inpSkole = document.getElementById("Skole");
+
+  var formDelSchool = document.getElementById("admin_form4");
+  var formDelSport = document.getElementById("admin_form5");
+  var formDelTeam = document.getElementById("admin_form6");
+
+  var inpDelSchool = document.getElementById("DelSkole");
+  var inpDelSport = document.getElementById("DelSport");
+  var inpDelTeam = document.getElementById("DelLag");
+
+  //Database refrenses
+  var database = firebase.database();
+  var SportDB = database.ref("Sport");
+  var LagDB = database.ref("Lag");
+  var SkoleDB = database.ref("Skole");
+  var ResultaterDB = database.ref("Resultater");
+
+  function Pushsport(event) {
+    event.preventDefault();
+
+    var valsport = inpSport.value;
+    SportDB.push({
+      "name": valsport
+    });
+  }
+
+  function PushSkole(event) {
+    event.preventDefault();
+
+    var valSkole = inpSkole.value;
+    inpSkole.value = "";
+    SkoleDB.push({
+      "name": valSkole
+    });
+  }
+
+  function PushPoeng(event) {
+    event.preventDefault();
+
+    var valPoeng = inpPoeng.value;
+    var valPoengLag = inpPoengLag.value;
+    inpPoeng.value = "";
+
+    ResultaterDB.push({
+      "Poeng": valPoeng,
+      "Lag": valPoengLag
+    });
+  }
+
+  function GetSkole(snapshot) {
+
+    var regSchool = snapshot.key;
+    var theregSchool = snapshot.val();
+
+    inpDelSchool.innerHTML += `
+    <option value="${regSchool}">
+      ${theregSchool.name}
+    </option>
+    `;
+  }
+
+  function GetSport(snapshot) {
+
+    var regSport = snapshot.key;
+    var theregSport = snapshot.val();
+
+    inpDelSport.innerHTML += `
+      <option value="${regSport}">
+        ${theregSport.name}
+      </option>
+      `;
+  }
+
+  function GetTeams(snapshot) {
+
+    var regTeam = snapshot.key;
+    var regTeamName = snapshot.val();
+
+    inpDelTeam.innerHTML += `
+      <option value="${regTeam}">
+        ${regTeamName.navn}
+      </option>`;
+
+    inpPoengLag.innerHTML += `
+    <option value="${regTeam}">
+      ${regTeamName.navn}
+    </option>`;
+  }
+
+  function GetResultater(snapshot) {
+
+  }
+
+  formskoleset.onsubmit = PushSkole;
+  formsportset.onsubmit = Pushsport;
+  formlagset.onsubmit = PushPoeng;
+
+  SportDB.on("child_added", GetSport);
+  SkoleDB.on("child_added", GetSkole);
+  LagDB.on("child_added", GetTeams);
+  ResultaterDB.on("child_added", GetResultater);
+</script>
+
+</html>

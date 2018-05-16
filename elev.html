@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="no" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <title>Aktivitetsdag</title>
+  <link rel="stylesheet" href="./css/master.css">
+  <link rel="stylesheet" href="./css/elev.css">
+  <link rel="icon" type="image/png" sizes="192x192" href="./icon/icon.png">
+  <script src="https://www.gstatic.com/firebasejs/5.0.2/firebase.js"></script>
+  <script>
+    // Initialize Firebase
+    var config = {
+      apiKey: "AIzaSyCQ_okOVcbYXlhukfJsJciT8xlACCETZ4o",
+      authDomain: "idrettsdag-b5b53.firebaseapp.com",
+      databaseURL: "https://idrettsdag-b5b53.firebaseio.com",
+      projectId: "idrettsdag-b5b53",
+      storageBucket: "",
+      messagingSenderId: "49187009985"
+    };
+    firebase.initializeApp(config);
+  </script>
+</head>
+
+<body>
+  <nav>
+    <ul>
+      <li><a href="index.html"><img src="./icon/icon.png" alt=""> Hjem</a></li>
+      <li><a href="elev.html">Resultater</a></li>
+      <li></li>
+      <li><a href="admin.html">Admin</a></li>
+    </ul>
+  </nav>
+
+
+  <main>
+    <form id="resultater" class="" action="index.html" method="post">
+      <label for="Team">Sort by team</label>
+      <select id="Team" class="" name="" onchange="sortResaults()">
+        <option value="allResults">----Select team----</option>
+      </select>
+    </form>
+    <table>
+      <thead>
+        <tr>
+          <th>Lag</th>
+          <th>Skole</th>
+          <th>Klasse</th>
+          <th>Sport</th>
+          <th>Poeng</th>
+        </tr>
+      </thead>
+      <tbody id="tb">
+
+      </tbody>
+    </table>
+
+  </main>
+
+</body>
+
+<script type="text/javascript">
+  //Get all HTML ELEMENTS
+  var formResultat = document.getElementById("resultater");
+  var inpTeam = document.getElementById("Team");
+  var table = document.getElementById("tb");
+
+  //Add all databases
+  var database = firebase.database();
+  var SportDB = database.ref("Sport");
+  var LagDB = database.ref("Lag");
+  var SkoleDB = database.ref("Skole");
+  var ResultaterDB = database.ref("Resultater");
+
+  function GetTeam(snapshot) {
+    var regTeam = snapshot.key;
+    var regTeamName = snapshot.val();
+
+    inpTeam.innerHTML += `
+    <option value="${regTeam}">
+      ${regTeamName.navn}
+    </option> `;
+  }
+
+  function getResults(snapshot) {
+    var theregResult = snapshot.val();
+
+    // use a second function to get data from schoolsDB and use as foreign key
+    var resultaterRef = database.ref("Lag/" + theregResult.Lag);
+    console.log(resultaterRef);
+
+    resultaterRef.on("value", function(snapshotResults) {
+      var theResult = snapshotResults.val();
+      var SkoleRef = database.ref("Skole/" + theResult.skole);
+      console.log(theResult);
+      SkoleRef.on("value", function(snapshotSkole) {
+
+        console.log("testing schoolsRef");
+
+        var regSkole = snapshot.key;
+        var theSkole = snapshotSkole.val();
+        console.log(theSkole);
+
+        var SportRef = database.ref("Sport/" + theResult.Sport);
+
+        SportRef.on("value", function(snapshotSport) {
+
+          console.log("testing sportsRef");
+
+          var regSport = snapshot.key;
+          var theSport = snapshotSport.val();
+
+          console.log(theSport);
+
+          // show teams in table
+          table.innerHTML +=
+            `
+          <tr>
+            <td>
+              ${theResult.navn}
+            </td>
+            <td>
+              ${theSkole.name}
+            </td>
+            <td>
+              ${theResult.Klasse}
+            </td>
+            <td>
+              ${theSport.name}
+            </td>
+            <td>
+              + ${theregResult.Poeng}
+            </td>
+          </tr>
+          `;
+
+        });
+
+      });
+    });
+
+  };
+
+  function sortResaults() {
+    console.log("testing sortResultByTeam");
+
+    var selTeam = inpTeam.value;
+    console.log(selTeam);
+    // show the results of the selected team
+    table.innerHTML = "";
+
+    ResultaterDB.orderByChild("Lag")
+      .equalTo(selTeam)
+      .on("child_added", getResults);
+
+    // if no team is selected, show all results from all teams
+    if (selTeam == "allResults") {
+      table.innerHTML = "";
+      ResultaterDB.on("child_added", getResults);
+    };
+  }
+
+  ResultaterDB.on("child_added", getResults);
+  LagDB.on("child_added", GetTeam);
+</script>
+
+</html>

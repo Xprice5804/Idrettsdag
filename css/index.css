@@ -1,0 +1,85 @@
+
+:root{
+    --light-primary-color: #B3E5FC;
+    --space: 1rem;
+    --gray-lighter: #E8E8E8;
+    --bold: 700;
+    --gray: #ccc;
+    --smooth: ease-in-out 0.25s;
+    --smooth-lighter-shadow: 0 2px 4px var(--almost-white), 0 2px 4px rgba(0,0,0,0.15);
+}
+
+
+main {
+  padding: 3rem;
+  padding-top: 10rem;
+}
+
+h2 {
+  margin: 0;
+  font-size: 2vw;
+  text-align: left;
+}
+
+table {
+  font-size: 1rem;
+  width: 100%;
+}
+
+th {
+  background-color: #4CAF50;
+  font-size: 2rem;
+}
+
+td{
+  font-size: 1rem
+}
+
+tr:nth-child(even) {
+  background-color: #79cf88;
+}
+
+form {
+  width: 100%;
+  padding: 1rem;
+  font-size: 2vw;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.15rem;
+}
+
+label {
+  width: 100%;
+  margin: 0;
+}
+
+input {
+  width: 100%;
+  font-size: 0.7vw;
+}
+
+select {
+  height: 2.5rem;
+  font-size: 1vw;
+}
+
+.submit {
+  width: 100%;
+  margin: calc(var(--space)*0)
+  0
+  calc(var(--space)*0)
+  0;
+  padding: calc(var(--space)*1)
+  calc(var(--space)*0.5)
+  calc(var(--space)*1)
+  calc(var(--space)*0.5);
+  border: 0 solid transparent;
+  background-color: var(--light-primary-color);
+  background-image: linear-gradient(45deg, #0288D1 0%, #85FFBD 100%);
+  border-radius: calc(var(--space)*0.5);
+  transition: var(--smooth);
+}
+
+.submit:hover {
+  box-shadow: var(--smooth-lighter-shadow);
+}
