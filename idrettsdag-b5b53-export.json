@@ -1,0 +1,58 @@
+{
+  "Lag" : {
+    "-LCdbDeSN0s09tH1zvbM" : {
+      "Klasse" : "2STA",
+      "Sport" : "-LCXRykxOCnDVDWhE44X",
+      "navn" : "TeamDuken",
+      "skole" : "-LCXZ2Nc0Of-qO8g2O-I"
+    },
+    "-LCdnJZMGA6Meey9LKxD" : {
+      "Klasse" : "1STC",
+      "Sport" : "-LCXRykxOCnDVDWhE44X",
+      "navn" : "Vinnerlaget",
+      "skole" : "-LCbnuU7LfAke9BdorDi"
+    }
+  },
+  "Resultater" : {
+    "-LCeCrM7PQKaJJp27WVa" : {
+      "Lag" : "-LCdbDeSN0s09tH1zvbM",
+      "Poeng" : "5"
+    },
+    "-LCePi15-entXtA6OKdD" : {
+      "Lag" : "-LCdnJZMGA6Meey9LKxD",
+      "Poeng" : "2"
+    },
+    "-LCePj3qgsaDLSiMTF7b" : {
+      "Lag" : "-LCdbDeSN0s09tH1zvbM",
+      "Poeng" : "3"
+    }
+  },
+  "Skole" : {
+    "-LCXZ2Nc0Of-qO8g2O-I" : {
+      "name" : "Ski"
+    },
+    "-LCbnuU7LfAke9BdorDi" : {
+      "name" : "Drømtorp"
+    },
+    "-LCePo1uZEjVaBHOxnay" : {
+      "name" : "Ås"
+    },
+    "-LCf7ZV4xnATcdr4-nRq" : {
+      "name" : "Frogner"
+    }
+  },
+  "Sport" : {
+    "-LCXRykxOCnDVDWhE44X" : {
+      "name" : "Fotball"
+    },
+    "-LCbnvxLuc8--MDWJFff" : {
+      "name" : "Håndball"
+    },
+    "-LCePlttYsyej9JiVahU" : {
+      "name" : "Seiling"
+    },
+    "-LCePn2FKr0XYfhhYCJp" : {
+      "name" : "Tennis"
+    }
+  }
+}
