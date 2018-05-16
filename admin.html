@@ -74,7 +74,7 @@
   </main>
 </body>
 <script type="text/javascript">
-  //Declare all variables
+  //Declare all variables and fetch all HTML ELEMENTS
   var formlagset = document.getElementById("admin_form3");
   var formsportset = document.getElementById("admin_form1");
   var formskoleset = document.getElementById("admin_form2");
@@ -99,6 +99,7 @@
   var SkoleDB = database.ref("Skole");
   var ResultaterDB = database.ref("Resultater");
 
+  //Pushing a new sport into the database
   function Pushsport(event) {
     event.preventDefault();
 
@@ -108,6 +109,7 @@
     });
   }
 
+  //Pushing a new school into the database
   function PushSkole(event) {
     event.preventDefault();
 
@@ -118,6 +120,7 @@
     });
   }
 
+  //Pushing a new score into the Database
   function PushPoeng(event) {
     event.preventDefault();
 
@@ -131,8 +134,8 @@
     });
   }
 
+  //Listening function to get the schools into the select menu
   function GetSkole(snapshot) {
-
     var regSchool = snapshot.key;
     var theregSchool = snapshot.val();
 
@@ -143,8 +146,8 @@
     `;
   }
 
+  //Listening function to get the sports into the select menu
   function GetSport(snapshot) {
-
     var regSport = snapshot.key;
     var theregSport = snapshot.val();
 
@@ -155,6 +158,7 @@
       `;
   }
 
+  //Listening function to get the Teams into the select menus
   function GetTeams(snapshot) {
 
     var regTeam = snapshot.key;
@@ -171,10 +175,7 @@
     </option>`;
   }
 
-  function GetResultater(snapshot) {
-
-  }
-
+  //Activating the lisening functions
   formskoleset.onsubmit = PushSkole;
   formsportset.onsubmit = Pushsport;
   formlagset.onsubmit = PushPoeng;

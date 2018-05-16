@@ -77,6 +77,7 @@
   var SkoleDB = database.ref("Skole");
   var ResultaterDB = database.ref("Resultater");
 
+  //Lisening function to add teams to the select menu
   function GetTeam(snapshot) {
     var regTeam = snapshot.key;
     var regTeamName = snapshot.val();
@@ -90,32 +91,19 @@
   function getResults(snapshot) {
     var theregResult = snapshot.val();
 
-    // use a second function to get data from schoolsDB and use as foreign key
+    // nesting a lot of functions to get all the foreign key transformed to readable values
     var resultaterRef = database.ref("Lag/" + theregResult.Lag);
-    console.log(resultaterRef);
 
     resultaterRef.on("value", function(snapshotResults) {
       var theResult = snapshotResults.val();
       var SkoleRef = database.ref("Skole/" + theResult.skole);
-      console.log(theResult);
+
       SkoleRef.on("value", function(snapshotSkole) {
-
-        console.log("testing schoolsRef");
-
-        var regSkole = snapshot.key;
         var theSkole = snapshotSkole.val();
-        console.log(theSkole);
-
         var SportRef = database.ref("Sport/" + theResult.Sport);
 
         SportRef.on("value", function(snapshotSport) {
-
-          console.log("testing sportsRef");
-
-          var regSport = snapshot.key;
           var theSport = snapshotSport.val();
-
-          console.log(theSport);
 
           // show teams in table
           table.innerHTML +=
@@ -148,12 +136,12 @@
 
   function sortResaults() {
     console.log("testing sortResultByTeam");
-
     var selTeam = inpTeam.value;
     console.log(selTeam);
-    // show the results of the selected team
+    //remove the entire table
     table.innerHTML = "";
 
+    //only run the sorted values in the getResults function
     ResultaterDB.orderByChild("Lag")
       .equalTo(selTeam)
       .on("child_added", getResults);
@@ -165,6 +153,7 @@
     };
   }
 
+  //Activating the lisening functions
   ResultaterDB.on("child_added", getResults);
   LagDB.on("child_added", GetTeam);
 </script>

@@ -85,7 +85,6 @@
 
   //Lisening functions to get School generated in HTML select
   function GetSkole(snapshot) {
-
     var regSchool = snapshot.key;
     var theregSchool = snapshot.val();
 
@@ -97,7 +96,6 @@
 
   //Lisening functions to get Sport generated in HTML select
   function GetSport(snapshot) {
-
     var regSport = snapshot.key;
     var theregSport = snapshot.val();
 
@@ -129,29 +127,20 @@
 
   //Lisening function to get a table with all partisipants
   function GetTeams(snapshot) {
-
     var regTeam = snapshot.key;
     var regTeamName = snapshot.val();
-
     var SkoleRef = database.ref("Skole/" + regTeamName.skole);
 
+    //nesting functions to get all foren key to readable values
     SkoleRef.on("value", function(snapshotSkole) {
-
-      console.log("testing schoolsRef");
-
       var regSkole = snapshot.key;
       var theSkole = snapshotSkole.val();
+      var SportRef = database.ref("Sport/" + regTeamName.Sport);
       console.log(theSkole);
 
-      var SportRef = database.ref("Sport/" + regTeamName.Sport);
-
       SportRef.on("value", function(snapshotSport) {
-
-        console.log("testing sportsRef");
-
         var regSport = snapshot.key;
         var theSport = snapshotSport.val();
-
         console.log(theSport);
 
         // show teams in table
@@ -172,14 +161,11 @@
           </td>
         </tr>
         `;
-
       });
-
     });
-
-
   }
 
+  //Activating the lisening functions
   formregteam.onsubmit = PushTeam;
   SportDB.on("child_added", GetSport);
   SkoleDB.on("child_added", GetSkole);
