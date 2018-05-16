@@ -9,9 +9,8 @@
     --smooth-lighter-shadow: 0 2px 4px var(--almost-white), 0 2px 4px rgba(0,0,0,0.15);
 }
 
-
 main {
-  padding-top: 6rem;
+  padding-top: 1rem;
   display: grid;
   grid-template-columns: repeat(12, 1fr);
 }

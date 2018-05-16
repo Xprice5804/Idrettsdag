@@ -33,6 +33,10 @@
     </ul>
   </nav>
 
+  <header>
+    <img src=".\icon\soccer-ball-variant.svg" alt="">
+  </header>
+
   <main>
     <h2>Påmelding:</h2>
     <form id="reg" class="" action="index.html" method="post">
@@ -64,7 +68,7 @@
 </body>
 
 <script type="text/javascript">
-  //Declaring and gettin all HTML ELEMENTS
+  //Declaring and getting all HTML ELEMENTS
   var formregteam = document.getElementById("reg");
   var inpTeamName = document.getElementById("Team");
   var inpSkole = document.getElementById("Skole");
@@ -79,6 +83,7 @@
   var SkoleDB = database.ref("Skole");
   var ResultaterDB = database.ref("Resultater");
 
+  //Lisening functions to get School generated in HTML select
   function GetSkole(snapshot) {
 
     var regSchool = snapshot.key;
@@ -90,6 +95,7 @@
     </option>`;
   }
 
+  //Lisening functions to get Sport generated in HTML select
   function GetSport(snapshot) {
 
     var regSport = snapshot.key;
@@ -101,6 +107,7 @@
       </option>`;
   }
 
+  //Pushing new Teams to database
   function PushTeam(event) {
     event.preventDefault();
 
@@ -120,6 +127,7 @@
     });
   }
 
+  //Lisening function to get a table with all partisipants
   function GetTeams(snapshot) {
 
     var regTeam = snapshot.key;
